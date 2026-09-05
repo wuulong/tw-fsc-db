@@ -30,6 +30,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 RAW_DIR = DATA_DIR / "raw"
 SAMPLES_DIR = DATA_DIR / "samples"
+# 引用 a00_core 工具與智慧同步防護器
+SRC_DIR = BASE_DIR / "src"
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from a00_core.utils.sync_guard import compute_file_sha256, check_remote_header_modified, should_skip_update_by_hash
+from a00_core.fsc_core import get_fsc_db_path
+
+SYNC_META_PATH = DATA_DIR / ".sync_manifest.json"
 
 # 定義六大業務模組之核心資料來源矩陣 (對齊 6 大粗粒度業務聚合模組)
 DATASET_REGISTRY = [
@@ -585,15 +594,199 @@ def generate_datasets_md(results: List[Dict[str, Any]]) -> str:
 
     return "\n".join(lines)
 
+def load_sync_manifest() -> Dict[str, Any]:
+    """載入既有同步紀錄 (包含 etag, last_modified, sha256_hash, last_synced_at)"""
+    if SYNC_META_PATH.exists():
+        try:
+            return json.loads(SYNC_META_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            return {}
+    return {}
+
+def save_sync_manifest(manifest: Dict[str, Any]):
+    """儲存最新同步紀錄清單至 .sync_manifest.json"""
+    SYNC_META_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SYNC_META_PATH.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+
+def trigger_incremental_etl(module_id: str, custom_db: Optional[str] = None) -> Dict[str, Any]:
+    """
+    依模組代號動態呼叫對應模組之自包含 ETL 函式，進行補充式 (Upsert) 增量寫入
+    """
+    target_db, _ = get_fsc_db_path(custom_db)
+    
+    # 確保模組可在 sys.path 中被 import
+    modules_dir = BASE_DIR / "modules"
+    if str(modules_dir) not in sys.path:
+        sys.path.insert(0, str(modules_dir))
+
+    try:
+        if module_id == "f10_banking_credit_db":
+            from modules.f10_banking_credit_db.etl import run_f10_etl
+            return run_f10_etl(target_db)
+        elif module_id == "f20_securities_markets_db":
+            from modules.f20_securities_markets_db.etl import run_f20_etl
+            return run_f20_etl(target_db)
+        elif module_id == "f30_insurance_supervision_db" or module_id == "f30_insurance_actuarial_db":
+            from modules.f30_insurance_actuarial_db.etl import run_f30_etl
+            return run_f30_etl(target_db)
+        elif module_id == "f40_financial_inspection_db" or module_id == "f40_inspection_bureau_db":
+            from modules.f40_inspection_bureau_db.etl import run_f40_etl
+            return run_f40_etl(target_db)
+        elif module_id == "f50_sanctions_consumer_db" or module_id == "f50_sanctions_legal_db":
+            from modules.f50_sanctions_legal_db.etl import run_f50_etl
+            return run_f50_etl(target_db)
+        elif module_id == "f60_fintech_esg_db" or module_id == "f60_fintech_vasp_db":
+            from modules.f60_fintech_vasp_db.etl import run_f60_etl
+            return run_f60_etl(target_db)
+    except Exception as e:
+        return {"status": "FAILED", "error": str(e)}
+
+    return {"status": "NO_ETL_DEFINED"}
+
+def check_and_update_datasets(
+    auto_etl: bool = True,
+    custom_db: Optional[str] = None
+) -> List[Dict[str, Any]]:
+    """
+    週期性智慧檢查更新流水線 (Smart Sync Pipeline):
+    1. 對外部來源進行 HTTP HEAD / ETag 檢查，未修改則 0 流量跳過。
+    2. 下載後進行檔案 SHA-256 內容雜湊比對，若內容完全相同則跳過重複入庫。
+    3. 若真有新內容，抽取前 20 筆 Samples 並發動對應模組的補充式 ETL (INSERT OR REPLACE)。
+    4. 最後若有任一模組更新，觸發 F00 母大腦重新聚合倒排索引 (FTS5)。
+    """
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+    SAMPLES_DIR.mkdir(parents=True, exist_ok=True)
+
+    manifest = load_sync_manifest()
+    results = []
+    modules_to_update = set()
+
+    for entry in DATASET_REGISTRY:
+        ds_id = entry["dataset_id"]
+        local_raw = entry["local_raw_name"]
+        raw_p = RAW_DIR / local_raw
+        sample_p = SAMPLES_DIR / entry["local_sample_name"]
+        
+        item_res = {
+            "module_id": entry["module_id"],
+            "name": entry["name"],
+            "dataset_id": ds_id,
+            "url": entry["url"],
+            "status": "UP_TO_DATE",
+            "action": "SKIPPED"
+        }
+
+        # 處理本機種子檔案
+        if ds_id.startswith("SEED-"):
+            # 種子檔案比對本機 SHA-256
+            if raw_p.exists():
+                curr_hash = compute_file_sha256(raw_p)
+                prev_record = manifest.get(ds_id, {})
+                if prev_record.get("sha256_hash") == curr_hash:
+                    item_res["action"] = "SKIPPED_SEED_UNCHANGED"
+                else:
+                    manifest[ds_id] = {
+                        "sha256_hash": curr_hash,
+                        "last_updated": datetime.now().isoformat()
+                    }
+                    modules_to_update.add(entry["module_id"])
+                    item_res["action"] = "SEED_REGISTERED"
+            results.append(item_res)
+            continue
+
+        prev_info = manifest.get(ds_id, {})
+        prev_etag = prev_info.get("etag", "")
+        prev_lm = prev_info.get("last_modified", "")
+        prev_hash = prev_info.get("sha256_hash", "")
+
+        # 步驟 1: HTTP HEAD 檢查 (若檔案已在本地且有標頭)
+        if raw_p.exists() and (prev_etag or prev_lm):
+            modified, new_headers = check_remote_header_modified(entry["url"], prev_etag, prev_lm)
+            if not modified:
+                item_res["action"] = "SKIPPED_HTTP_304"
+                results.append(item_res)
+                continue
+        else:
+            new_headers = {}
+
+        # 步驟 2: 下載最新內容
+        try:
+            sys.stderr.write(f"📥 探測/下載: {entry['name']}...\n")
+            content = fetch_url_content(entry["url"])
+        except Exception as e:
+            item_res["status"] = "ERROR"
+            item_res["action"] = f"DOWNLOAD_FAILED: {e}"
+            results.append(item_res)
+            continue
+
+        # 計算下載內容雜湊
+        new_hash = hashlib.sha256(content).hexdigest()
+        if raw_p.exists() and new_hash == prev_hash:
+            item_res["action"] = "SKIPPED_HASH_MATCH"
+            results.append(item_res)
+            continue
+
+        # 步驟 3: 寫入新 raw 檔案與抽取 Samples
+        raw_p.write_bytes(content)
+        extract_samples(raw_p, sample_p, entry["format"], limit=20)
+
+        # 登記 Manifest
+        manifest[ds_id] = {
+            "name": entry["name"],
+            "module_id": entry["module_id"],
+            "etag": new_headers.get("etag", prev_etag),
+            "last_modified": new_headers.get("last_modified", prev_lm),
+            "sha256_hash": new_hash,
+            "raw_size": len(content),
+            "last_synced_at": datetime.now().isoformat()
+        }
+
+        modules_to_update.add(entry["module_id"])
+        item_res["status"] = "UPDATED"
+        item_res["action"] = "DOWNLOADED_AND_SAMPLED"
+        item_res["new_hash"] = new_hash[:10]
+        results.append(item_res)
+
+    save_sync_manifest(manifest)
+
+    # 步驟 4: 若有模組需要更新且 auto_etl 為 True，發動補充式增量 ETL
+    if auto_etl and modules_to_update:
+        target_db, _ = get_fsc_db_path(custom_db)
+        sys.stderr.write(f"⚙️ 檢測到 {len(modules_to_update)} 個模組有數據更新，正在執行補充式 ETL 入庫...\n")
+        for mod in sorted(modules_to_update):
+            etl_res = trigger_incremental_etl(mod, custom_db)
+            sys.stderr.write(f"  ✔ [{mod}] 增量 ETL 完成: {etl_res.get('status', 'OK')} (受影響筆數: {etl_res.get('total_records', 0)})\n")
+
+        # 觸發 F00 母大腦倒排全合龍
+        try:
+            from modules.f00_master_hub.etl import build_f00_master_index
+            build_res = build_f00_master_index(target_db)
+            sys.stderr.write(f"🌐 母大腦 F00 全域倒排與 360° Profile 已同步重整 (總註冊數: {build_res.get('total_entities_registered')})\n")
+        except Exception as e:
+            sys.stderr.write(f"⚠️ 母大腦 F00 倒排更新失敗: {e}\n")
+
+    return results
+
 def main():
-    parser = argparse.ArgumentParser(description="金管會開放資料同步與範例抽取工具")
+    parser = argparse.ArgumentParser(description="金管會開放資料同步、週期更新與增量入庫工具 (CGS v2.1)")
+    parser.add_argument("--check-updates", action="store_true", help="週期性智慧檢查遠端更新：比對 ETag 與 SHA-256，有變更才下載並補充式增量入庫")
+    parser.add_argument("--db", default=None, help="指定目標 SQLite 資料庫路徑 (預設為四階解析路徑)")
+    parser.add_argument("--no-etl", action="store_true", help="檢查更新並下載後，不自動觸發模組 ETL")
     parser.add_argument("--sync-all", action="store_true", help="全量下載並抽取前 20 筆樣本")
     parser.add_argument("--extract-only", action="store_true", help="不重新下載，僅從既有 raw 抽取樣本")
     parser.add_argument("--status", action="store_true", help="檢查目前 samples 與 raw 狀態")
     parser.add_argument("-j", "--json", action="store_true", help="輸出 JSON 格式")
     args = parser.parse_args()
 
-    if args.sync_all:
+    if args.check_updates:
+        results = check_and_update_datasets(auto_etl=not args.no_etl, custom_db=args.db)
+        if args.json:
+            print(json.dumps(results, ensure_ascii=False, indent=2))
+        else:
+            print("📊 週期性資料更新檢測完成：")
+            for r in results:
+                print(f"  • [{r['module_id']}] {r['name']}: {r['action']}")
+    elif args.sync_all:
         results = sync_datasets(download=True, extract=True)
         md_content = generate_datasets_md(results)
         (BASE_DIR / "DATASETS.md").write_text(md_content, encoding="utf-8")

@@ -89,7 +89,12 @@ fsc-data-sync:
 	@echo "🔄 執行開放資料同步與 20 筆樣本抽取..."
 	{{PYTHON}} scripts/fsc_data_sync.py --sync-all
 
-# 4. 檢查開放資料與樣本狀態
+# 4. 週期性智慧檢查遠端更新 (ETag/SHA-256 智慧跳過，有變更才補充式更新)
+fsc-data-check:
+	@echo "🔍 週期性智慧檢查遠端更新 (Smart Sync)..."
+	{{PYTHON}} scripts/fsc_data_sync.py --check-updates
+
+# 5. 檢查開放資料與樣本狀態
 fsc-data-status:
 	@echo "📊 檢查開放資料原始檔與樣本狀態..."
 	{{PYTHON}} scripts/fsc_data_sync.py --status
