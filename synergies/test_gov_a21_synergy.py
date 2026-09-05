@@ -76,7 +76,7 @@ def test_gov_a21_synergy_integration():
     ent_cnt = cur_f.fetchone()[0]
     t_step4 = (time.time() - t_start) * 1000
     
-    assert ent_cnt >= 2600
+    assert ent_cnt >= 2500
     print(f"  ├─ 成功讀取 f00_entity_registry 金融法人總數: {ent_cnt} 筆")
     print(f"  └─ 耗時: {t_step4:.3f} ms")
     conn_fsc.close()

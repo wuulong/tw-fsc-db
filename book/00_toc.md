@@ -4,7 +4,7 @@ book_id: "tw_fsc_db_atlas"
 title: "台灣金融監理開放資料全景圖鑑：從特許機構、市場監控到防詐金檢的資料體系"
 category: "methodology"
 author: "wuulong / Antigravity"
-version: "1.1.0"
+version: "1.2.0"
 agency: "金融監督管理委員會 (Financial Supervisory Commission, R.O.C.)"
 domain_code: "GOV-A21"
 agency_oid: "2.16.886.101.20003.20022"
@@ -15,7 +15,7 @@ mother_brain: "GOV-300 (tw-gov-db)"
 
 * **專案名稱**：`tw-fsc-db` (台灣金融監督管理開放資料智庫)
 * **行政院部會代號**：`GOV-A21`
-* **受控版本**：`v1.1.0`
+* **受控版本**：`v1.2.0`
 * **專書規範**：Book Governance Spec (BGS) v2.0
 * **原始儲存庫**：[https://github.com/wuulong/tw-fsc-db](https://github.com/wuulong/tw-fsc-db)
 

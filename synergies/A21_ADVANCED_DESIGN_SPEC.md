@@ -1,7 +1,7 @@
 # 🔬 A21 進階設計與跨部會多 DB 事前穿透規格書 (A21_ADVANCED_DESIGN_SPEC.md)
 
 * **專案代號**：`GOV-A21`
-* **受控版本**：`v1.1.0`
+* **受控版本**：`v1.2.0`
 * **母專案對接**：`GOV-300` (tw-gov-db) ↔ `GOV-A21` (tw-fsc-db) ↔ `GOV-A19` (tw-agro-db)
 
 ---

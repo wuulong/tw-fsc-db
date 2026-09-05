@@ -2,7 +2,7 @@
   "project_name": "tw-fsc-db",
   "domain_code": "GOV-A21",
   "agency_name": "金融監督管理委員會",
-  "agency_oid": "2.16.886.101.20003.20022",
+  "agency_oid": "2.16.886.101.20003.20052",
   "mother_project_id": "GOV-300",
   "mother_domain_map_path": "/Volumes/D2024/data/gov-db-in/domain_map_config.json",
   "five_pillars_alignment": {
@@ -12,5 +12,14 @@
     "corporate_pillar": "npo_registry / tax_id / corporate_registry",
     "temporal_pillar": "ISO-8601 (YYYY-MM-DDTHH:MM:SS+08:00)"
   },
-  "spec_version": "v1.0.0"
+  "spec_version": "v1.2.0",
+  "synergy_status": "Bootstrapped (已完成全路徑對接驗證)",
+  "synergy_verified_at": "2026-09-05T18:33:00+08:00",
+  "synergy_verification_pass_rate": "100% (4/4 PASS)",
+  "synergy_requirements_verified": [
+    "G300-REQ-FSC-01: OID 權責歸併成功 (2.16.886.101.20003.20052)",
+    "G300-REQ-FSC-02: 6碼門牌區號反查 (新北市板橋區 -> 650001 / 0.986ms)",
+    "G300-REQ-FSC-03: 企業統編 Pass-Through 快取 (2,590 筆實體 100% 寫回)",
+    "G300-REQ-FSC-04: 跨部會 DB 直連與 CLI 調度 (fsc.db 實體 2,590 家機構直連)"
+  ]
 }

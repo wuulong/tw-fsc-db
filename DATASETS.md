@@ -42,3 +42,13 @@
 * **金融科技創新實驗與監理沙盒核准名單 (Seed)**：`data/samples/f60_fintech_sandbox_sample.json` (JSON, 554B)
 * **洗錢防制法令遵循聲明之虛擬資產平台業者名冊 (Seed)**：`data/samples/f60_vasp_compliance_sample.json` (JSON, 1.1KB)
 * **國家溫室氣體排放清冊報告 (永續指標)**：`data/samples/f60_greenhouse_gas_sample.csv` (CSV, 2.0KB)
+---
+
+## 🏛️ 全政府母大腦通用基石對齊狀態 (GOV-300 Baseline Status)
+* **母專案對接狀態**：🟢 `Bootstrapped (100% 綠燈通過)`
+* **驗證日期**：2026-09-05 (對接通知單: `synergies/PROMPT_FROM_MASTER_G300.md`)
+* **通用基石零重複使用清冊**：
+  1. **組織 OID**：直接引用 G300 `master_agencies.sqlite`，金管會權威 OID 標定為 `2.16.886.101.20003.20052`。
+  2. **空間門牌**：直接引用 G300 `universal_keys.sqlite / admin_codes`，機構地址反查 6 碼門牌區號 (`650001`)。
+  3. **企業統編**：直接引用 G300 `corporate_registry` 旁路快取，穿透上市櫃與金控大股東法人。
+  4. **辦公日曆**：直接引用 G300 `calendar_registry`，對齊股市營業日與行政機關日曆。
