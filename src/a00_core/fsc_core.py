@@ -87,3 +87,17 @@ def query_agency_base_info(agency_oid: str = "2.16.886.101.20003.20022") -> Dict
         # 當實體檔案尚未載入或路徑例外時優雅 fallback
         pass
     return {"agency_name": "金融監督管理委員會", "agency_oid": agency_oid, "parent_oid": "2.16.886.101.20003"}
+def query_g300_admin_code(city_name: str, district_name: str) -> Optional[str]:
+    """調用 GOV-300 通用基石 universal_keys 反查 6 碼門牌行政區程式碼 (admin_codes)"""
+    resolver = get_mother_gov_resolver()
+    try:
+        conn = resolver.get_domain_core_db_connection("GOV-300", "universal_keys.sqlite")
+        cur = conn.cursor()
+        cur.execute("SELECT admin_code FROM admin_codes WHERE city_name = ? AND district_name = ?", (city_name, district_name))
+        row = cur.fetchone()
+        conn.close()
+        if row:
+            return row[0]
+    except Exception:
+        pass
+    return None
