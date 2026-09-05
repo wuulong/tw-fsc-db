@@ -1,0 +1,21 @@
+{
+  "module_id": "template_blueprint",
+  "name": "[模組名稱]",
+  "version": "0.1.0",
+  "data_source": {
+    "agency": "金融監督管理委員會",
+    "dataset_name": "[資料集名稱]",
+    "dataset_id": "[OpenData ID]",
+    "source_url": "[下載網址]",
+    "format": "CSV/JSON",
+    "sample_path": "data/samples/[檔名].csv"
+  },
+  "tables": [
+    "[table_name]"
+  ],
+  "views": [],
+  "record_counts": {
+    "[table_name]": 0
+  },
+  "status": "INIT"
+}

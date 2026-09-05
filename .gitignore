@@ -1,0 +1,24 @@
+# .gitignore for tw-fsc-db (金融監督管理委員會開放資料智庫)
+
+# 1. 二進位 SQLite 資料庫 (不 Commit 進入 Git，由外部儲存、Release Assets 或環境變數 FSC_DB_PATH 提供)
+db/*.db
+db/*.sqlite
+db/*.sqlite3
+*.db
+*.sqlite
+*.sqlite3
+
+# 2. 全量巨量原始數據 (不 Commit 進入 Git，僅保留 data/samples/ 微型測試範例)
+data/raw/
+
+# 3. Python 臨時與快取檔案
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+
+# 4. 系統與 IDE 檔案
+.DS_Store
+.vscode/
+.idea/

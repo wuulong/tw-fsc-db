@@ -1,0 +1,18 @@
+[
+  {
+    "case_no": "FS-2020-001",
+    "applicant": "好好投資科技股份有限公司",
+    "partner_institution": "台北富邦商業銀行",
+    "experiment_title": "基金交換平台創新實驗",
+    "approval_date": "2020-04-15",
+    "status": "GRADUATED"
+  },
+  {
+    "case_no": "FS-2021-002",
+    "applicant": "阿爾發證券投資顧問股份有限公司",
+    "partner_institution": "永豐商業銀行",
+    "experiment_title": "機器人理財與碎股交易創新實驗",
+    "approval_date": "2021-08-20",
+    "status": "ACTIVE"
+  }
+]

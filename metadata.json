@@ -1,0 +1,16 @@
+{
+  "project_name": "tw-fsc-db",
+  "domain_code": "GOV-A21",
+  "agency_name": "金融監督管理委員會",
+  "agency_oid": "2.16.886.101.20003.20022",
+  "mother_project_id": "GOV-300",
+  "mother_domain_map_path": "/Volumes/D2024/data/gov-db-in/domain_map_config.json",
+  "five_pillars_alignment": {
+    "publisher_pillar": "master_agencies.sqlite",
+    "spatial_pillar": "universal_keys.sqlite (admin_code)",
+    "hydrology_pillar": "universal_keys.sqlite (river_id, station_id)",
+    "corporate_pillar": "npo_registry / tax_id / corporate_registry",
+    "temporal_pillar": "ISO-8601 (YYYY-MM-DDTHH:MM:SS+08:00)"
+  },
+  "spec_version": "v2.1"
+}

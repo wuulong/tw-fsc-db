@@ -1,0 +1,18 @@
+{
+  "module_id": "f00_master_hub",
+  "name": "金管會母大腦全域倒排與元資料治理中心",
+  "version": "1.0.0",
+  "data_sources": [
+    {
+      "dataset_id": "F00_INTERNAL_HUB",
+      "dataset_name": "全域業務實體倒排聚合與元資料治理",
+      "format": "SQLITE_INTERNAL"
+    }
+  ],
+  "tables": [
+    "sys_module_metadata",
+    "fts_fsc_global"
+  ],
+  "views": [],
+  "status": "ACTIVE"
+}

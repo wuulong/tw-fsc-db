@@ -1,0 +1,182 @@
+[
+  {
+    "OccurDate": "2026-06-30",
+    "INSURER_Name": "兆豐產物保險股份有限公司",
+    "Cnt2": "395",
+    "Cnt3": "848",
+    "Underwriting": "133",
+    "Claim": "118",
+    "Actuary": "3"
+  },
+  {
+    "OccurDate": "2026-06-30",
+    "INSURER_Name": "臺灣產物保險股份有限公司",
+    "Cnt2": "646",
+    "Cnt3": "1320",
+    "Underwriting": "79",
+    "Claim": "88",
+    "Actuary": ""
+  },
+  {
+    "OccurDate": "2026-07-21",
+    "INSURER_Name": "富邦產物保險股份有限公司",
+    "Cnt2": "1878",
+    "Cnt3": "2733",
+    "Underwriting": "397",
+    "Claim": "304",
+    "Actuary": "2"
+  },
+  {
+    "OccurDate": "2026-07-07",
+    "INSURER_Name": "和泰產物保險股份有限公司",
+    "Cnt2": "487",
+    "Cnt3": "279",
+    "Underwriting": "78",
+    "Claim": "105",
+    "Actuary": "2"
+  },
+  {
+    "OccurDate": "2026-09-01",
+    "INSURER_Name": "泰安產物保險股份有限公司",
+    "Cnt2": "613",
+    "Cnt3": "2169",
+    "Underwriting": "104",
+    "Claim": "96",
+    "Actuary": ""
+  },
+  {
+    "OccurDate": "2026-06-30",
+    "INSURER_Name": "明台產物保險股份有限公司",
+    "Cnt2": "742",
+    "Cnt3": "2660",
+    "Underwriting": "128",
+    "Claim": "156",
+    "Actuary": "1"
+  },
+  {
+    "OccurDate": "2026-06-30",
+    "INSURER_Name": "南山產物保險股份有限公司",
+    "Cnt2": "523",
+    "Cnt3": "136",
+    "Underwriting": "152",
+    "Claim": "155",
+    "Actuary": "3"
+  },
+  {
+    "OccurDate": "2026-08-31",
+    "INSURER_Name": "第一產物保險股份有限公司",
+    "Cnt2": "370",
+    "Cnt3": "410",
+    "Underwriting": "43",
+    "Claim": "21",
+    "Actuary": "1"
+  },
+  {
+    "OccurDate": "2026-06-30",
+    "INSURER_Name": "旺旺友聯產物保險股份有限公司",
+    "Cnt2": "699",
+    "Cnt3": "374",
+    "Underwriting": "92",
+    "Claim": "47",
+    "Actuary": "1"
+  },
+  {
+    "OccurDate": "2026-07-16",
+    "INSURER_Name": "華南產物保險股份有限公司",
+    "Cnt2": "468",
+    "Cnt3": "285",
+    "Underwriting": "96",
+    "Claim": "48",
+    "Actuary": "1"
+  },
+  {
+    "OccurDate": "2026-06-01",
+    "INSURER_Name": "新光產物保險股份有限公司",
+    "Cnt2": "781",
+    "Cnt3": "",
+    "Underwriting": "191",
+    "Claim": "154",
+    "Actuary": "2"
+  },
+  {
+    "OccurDate": "2026-02-28",
+    "INSURER_Name": "國泰世紀產物保險股份有限公司",
+    "Cnt2": "1980",
+    "Cnt3": "53268",
+    "Underwriting": "103",
+    "Claim": "113",
+    "Actuary": "8"
+  },
+  {
+    "OccurDate": "2026-08-28",
+    "INSURER_Name": "新安東京海上產物保險股份有限公司",
+    "Cnt2": "1106",
+    "Cnt3": "1508",
+    "Underwriting": "129",
+    "Claim": "177",
+    "Actuary": "1"
+  },
+  {
+    "OccurDate": "2026-07-06",
+    "INSURER_Name": "中國信託產物保險股份有限公司",
+    "Cnt2": "235",
+    "Cnt3": "5097",
+    "Underwriting": "60",
+    "Claim": "41",
+    "Actuary": "1"
+  },
+  {
+    "OccurDate": "2025-12-31",
+    "INSURER_Name": "有限責任台灣區漁船產物保險合作社",
+    "Cnt2": "11",
+    "Cnt3": "",
+    "Underwriting": "1",
+    "Claim": "1",
+    "Actuary": ""
+  },
+  {
+    "OccurDate": "2026-07-31",
+    "INSURER_Name": "臺銀人壽保險股份有限公司",
+    "Cnt2": "473",
+    "Cnt3": "",
+    "Underwriting": "62",
+    "Claim": "18",
+    "Actuary": ""
+  },
+  {
+    "OccurDate": "2026-06-30",
+    "INSURER_Name": "台灣人壽保險股份有限公司",
+    "Cnt2": "2138",
+    "Cnt3": "8165",
+    "Underwriting": "144",
+    "Claim": "69",
+    "Actuary": "7"
+  },
+  {
+    "OccurDate": "2026-07-01",
+    "INSURER_Name": "保誠人壽保險股份有限公司",
+    "Cnt2": "940",
+    "Cnt3": "284",
+    "Underwriting": "33",
+    "Claim": "10",
+    "Actuary": "6"
+  },
+  {
+    "OccurDate": "2026-07-31",
+    "INSURER_Name": "國泰人壽保險股份有限公司",
+    "Cnt2": "4953",
+    "Cnt3": "24212",
+    "Underwriting": "247",
+    "Claim": "296",
+    "Actuary": "6"
+  },
+  {
+    "OccurDate": "2026-06-30",
+    "INSURER_Name": "凱基人壽保險股份有限公司",
+    "Cnt2": "2365",
+    "Cnt3": "16572",
+    "Underwriting": "149",
+    "Claim": "94",
+    "Actuary": "3"
+  }
+]

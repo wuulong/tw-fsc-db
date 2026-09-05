@@ -1,0 +1,35 @@
+{
+  "module_id": "f20_securities_markets_db",
+  "name": "證券期貨與公開市場 (Securities & Public Markets)",
+  "version": "2.0.0",
+  "data_sources": [
+    {
+      "dataset_id": "F20_ISIN",
+      "dataset_name": "本國上市證券國際證券辨識號碼 (ISIN)",
+      "format": "HTML_TABLE",
+      "sample_path": "data/samples/f20_isin_companies_sample.csv"
+    },
+    {
+      "dataset_id": "F20_REV",
+      "dataset_name": "公開發行公司每月營業收入彙總表",
+      "format": "CSV",
+      "sample_path": "data/samples/f20_monthly_revenue_sample.csv"
+    },
+    {
+      "dataset_id": "F20_SH",
+      "dataset_name": "上市公司持股逾10%大股東名單",
+      "format": "CSV",
+      "sample_path": "data/samples/f20_major_shareholders_sample.csv"
+    }
+  ],
+  "tables": [
+    "f20_companies",
+    "f20_monthly_revenues",
+    "f20_major_shareholders"
+  ],
+  "views": [
+    "v_f20_company_revenue_profile",
+    "v_f20_f10_financial_group_synergy"
+  ],
+  "status": "ACTIVE"
+}

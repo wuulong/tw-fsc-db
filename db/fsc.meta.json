@@ -1,0 +1,15 @@
+{
+  "db_name": "fsc.db",
+  "domain_code": "GOV-A21",
+  "schema_version": "2.1",
+  "tables": [
+    "fsc_business_records"
+  ],
+  "dependencies": {
+    "mother_db": "GOV-300",
+    "required_tables": [
+      "master_agencies",
+      "universal_keys"
+    ]
+  }
+}

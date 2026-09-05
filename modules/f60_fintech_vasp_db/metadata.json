@@ -1,0 +1,31 @@
+{
+  "module_id": "f60_fintech_vasp_db",
+  "name": "金融科技、虛擬資產平台 (VASP) 與永續金融智庫",
+  "version": "2.0.0",
+  "data_source": {
+    "agency": "金融監督管理委員會 (綜規處 / 數位小組 / 證券期貨局)",
+    "dataset_name": "虛擬通貨平台洗防聲明名冊、金融科技監理沙盒、國家溫室氣體排放清冊",
+    "dataset_id": "FSC-F60-VASP-ESG",
+    "source_url": "https://www.fsc.gov.tw",
+    "format": "JSON / CSV",
+    "raw_paths": [
+      "data/raw/f60_vasp_compliance_registry.json",
+      "data/raw/f60_fintech_sandbox.json",
+      "data/raw/f62_greenhouse_gas_report.csv"
+    ]
+  },
+  "tables": [
+    "f60_vasp_compliance_registry",
+    "f60_fintech_sandbox",
+    "f60_greenhouse_gas_report"
+  ],
+  "views": [
+    "v_f60_fintech_esg_overview"
+  ],
+  "record_counts": {
+    "f60_vasp_compliance_registry": 0,
+    "f60_fintech_sandbox": 0,
+    "f60_greenhouse_gas_report": 0
+  },
+  "status": "DEVELOPING"
+}

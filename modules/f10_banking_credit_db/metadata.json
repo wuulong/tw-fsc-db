@@ -1,0 +1,27 @@
+{
+  "module_id": "f10_banking_credit_db",
+  "name": "銀行與信用金融 (Banking & Credit)",
+  "version": "2.0.0",
+  "data_sources": [
+    {
+      "dataset_id": "F10_FHC_SETUP",
+      "dataset_name": "金融控股公司設立及子公司名冊",
+      "format": "CSV",
+      "sample_path": "data/samples/f10_fhc_setup_sample.csv"
+    },
+    {
+      "dataset_id": "F10_BANK_ASSET_QUALITY",
+      "dataset_name": "本國銀行資產品質及獲利統計 (Banking12)",
+      "format": "CSV",
+      "sample_path": "data/samples/f10_banking12_sample.csv"
+    }
+  ],
+  "tables": [
+    "f10_financial_holdings",
+    "f10_bank_asset_quality"
+  ],
+  "views": [
+    "v_f10_holding_banking_summary"
+  ],
+  "status": "ACTIVE"
+}

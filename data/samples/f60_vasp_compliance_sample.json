@@ -1,0 +1,38 @@
+[
+  {
+    "registration_no": "VASP-001",
+    "company_name": "現代財富科技有限公司",
+    "brand_name": "MaiCoin / MAX",
+    "tax_id": "54341909",
+    "compliance_date": "2021-10-01",
+    "business_type": "虛擬通貨買賣、交換、託管",
+    "status": "COMPLIANT"
+  },
+  {
+    "registration_no": "VASP-002",
+    "company_name": "幣託科技股份有限公司",
+    "brand_name": "BitoPro",
+    "tax_id": "54877708",
+    "compliance_date": "2021-10-15",
+    "business_type": "虛擬通貨買賣、交換、託管",
+    "status": "COMPLIANT"
+  },
+  {
+    "registration_no": "VASP-003",
+    "company_name": "王牌數位創新股份有限公司",
+    "brand_name": "ACE",
+    "tax_id": "56987114",
+    "compliance_date": "2021-11-01",
+    "business_type": "虛擬通貨買賣、交換",
+    "status": "COMPLIANT"
+  },
+  {
+    "registration_no": "VASP-004",
+    "company_name": "塞席爾商共識網股份有限公司台灣分公司",
+    "brand_name": "BitstreetX",
+    "tax_id": "83244837",
+    "compliance_date": "2022-01-10",
+    "business_type": "虛擬通貨交易平台",
+    "status": "COMPLIANT"
+  }
+]
