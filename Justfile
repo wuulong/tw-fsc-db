@@ -150,7 +150,7 @@ fsc-ins-fund limit="5":
 	@echo "🚗 查詢特別補償基金運作 (近 {{limit}} 年)..."
 	PYTHONPATH=src {{PYTHON}} src/cli/fsc_cli.py insurer fund -n {{limit}}
 
-# 10. 集團股權與控制力網絡查詢
+# 10. 集團股權與控制力網路查詢
 fsc-rel query:
 	@echo "🕸️ 查詢金融集團控制鏈與大股東拓樸: {{query}}..."
 	PYTHONPATH=src {{PYTHON}} src/cli/fsc_cli.py relations {{query}}
@@ -161,7 +161,7 @@ fsc-exam-search query limit="5":
 	PYTHONPATH=src {{PYTHON}} src/cli/fsc_cli.py exam search {{query}} -n {{limit}}
 
 fsc-exam-cats sector="HOLDING":
-	@echo "📊 查詢重大缺失業務項目分佈統計 ({{sector}})..."
+	@echo "📊 查詢重大缺失業務專案分佈統計 ({{sector}})..."
 	PYTHONPATH=src {{PYTHON}} src/cli/fsc_cli.py exam categories --sector {{sector}}
 
 fsc-exam-exec limit="5":
@@ -200,3 +200,8 @@ fsc-fintech-esg limit="5":
 fsc-fintech-pen query:
 	@echo "🔍 沙盒創新案 ➔ 合作特許銀行體質穿透: {{query}}..."
 	PYTHONPATH=src {{PYTHON}} src/cli/fsc_cli.py fintech penetrate {{query}}
+
+# 7. 全書大一統合訂本打包編譯
+combine-book:
+	@echo "📚 打包金管會開源智庫全書合訂本 (FULL_BOOK_TAIWAN_FSC_DB.md)..."
+	{{PYTHON}} ../../../scripts/blog/combine_tw_fsc_db_book.py
