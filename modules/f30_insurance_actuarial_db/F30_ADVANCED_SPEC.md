@@ -1,7 +1,7 @@
 # 🚀 F30: 保險市場與精算風險前瞻協同規格書 (F30_ADVANCED_SPEC.md)
 
 * **模組代號**：`f30_insurance_actuarial_db`
-* **版本號**：`v2.0.0`
+* **版本號**：`v1.0.0`
 * **協同範疇**：金管會內部跨模組 (`F10`, `F50`) 與跨部會 (`tw-moi-db`, `tw-cwa-db`, `tw-wra-db`)
 
 ---

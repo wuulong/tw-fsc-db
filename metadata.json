@@ -12,5 +12,5 @@
     "corporate_pillar": "npo_registry / tax_id / corporate_registry",
     "temporal_pillar": "ISO-8601 (YYYY-MM-DDTHH:MM:SS+08:00)"
   },
-  "spec_version": "v2.1"
+  "spec_version": "v1.0.0"
 }
