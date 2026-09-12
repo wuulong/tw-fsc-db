@@ -13,8 +13,49 @@ import sqlite3
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Tuple
 
-# CGS v2.1 版號宣告
-__cli_spec_version__ = "2.1"
+# CGS v2.4 版號宣告
+__cli_spec_version__ = "2.4"
+
+def resolve_pipe_inputs(cli_arg: Optional[str] = None) -> List[str]:
+    """
+    統一解析 CLI 引數與 sys.stdin 串流：
+    1. 若命令行提供引數且不為 '-'，傳回 [cli_arg]
+    2. 若引數為空或為 '-'，且 sys.stdin 非 TTY：
+       - 逐行讀取 sys.stdin
+       - 自動支援逗號分隔展開與 JSON Array 反解
+    3. 否則傳回 []
+    """
+    import json
+    if cli_arg and cli_arg != "-":
+        return [cli_arg]
+    if not sys.stdin.isatty() or cli_arg == "-":
+        raw_text = sys.stdin.read().strip()
+        if not raw_text:
+            return []
+        # 嘗試 JSON array 解析
+        if raw_text.startswith("[") and raw_text.endswith("]"):
+            try:
+                parsed = json.loads(raw_text)
+                if isinstance(parsed, list):
+                    return [str(item).strip() for item in parsed if item]
+            except Exception:
+                pass
+        
+        # 逐行與逗號拆分
+        results = []
+        for line in raw_text.splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            if "," in line:
+                for part in line.split(","):
+                    p = part.strip()
+                    if p:
+                        results.append(p)
+            else:
+                results.append(line)
+        return results
+    return []
 
 # 預設外接磁碟資料庫路徑
 EXTERNAL_FSC_DB_PATH = Path("/Volumes/D2024/data/fsc-db-in/tw-fsc-db/db/fsc.db")
